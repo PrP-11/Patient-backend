@@ -2,15 +2,22 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
+const DB_URI= keys.mongoDB.dbURL
 // set up express app
 const app = express();
 
 // connect to mongodb
-mongoose.connect(keys.mongoDB.dbURL, ()=>{
-    console.log('connected to mongoDB');
-});
+mongoose
+    .connect(DB_URI, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log('db connected'))
+    .catch((err) => console.log(err))
+//set mongoose's Promise equal to global Promise since mongoose's Promise version is depricated
 mongoose.Promise = global.Promise;
-
 //set up static files
 app.use(express.static('public'));
 
