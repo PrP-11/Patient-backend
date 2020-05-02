@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 // create patient Schema & model
 const PatientSchema = new Schema({
-    name: {
+    email: {
         type: String,
         required: [true, 'Name field is required']
     },

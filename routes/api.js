@@ -4,12 +4,63 @@ const bcrypt=require('bcryptjs');
 const Patient = require('../models/patient');
 const Doctor = require('../models/doctor');
 
-// add a new patient to the db
-router.post('/register', function(req, res, next){
-    Patient.create(req.body).then(function(patient){
-        res.send(patient);
-    }).catch(next);
-});
+
+// /patients/signup
+router.post('/patients/signup', (req, res) => {
+  const {email, password, field} = req.body;
+  if ( !email || !password ) {
+      res.status(200).json({ msg: 'Please enter all fields' });
+    }
+  Patient.findOne({ email: email }).then(patient => {
+      
+      if (patient) {
+          return res.status(403).json({ message: "Email is already registered with us." });
+        
+      } else {
+        const newUser = new Patient({
+          email,
+          password,
+          field
+        });
+
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(user => {
+                res.send(user)
+                
+              })
+              .catch(err => console.log(err));
+          });
+        });
+      }
+    });
+  }
+);
+// patients/signin 
+router.post('/patients/signin',(req,res,next)=>{
+  const {email, password, field} = req.body;
+  Patient.findOne({email:email}).then(patient=>{
+        if(!patient){
+             res.send({message:"No such user exists"});
+          }
+         if(patient){
+           
+          bcrypt.compare(password, patient.password, (err, isMatch) => {
+            if (err) throw err;
+            else if (isMatch) {
+              return res.send(patient);
+            } else {
+              return res.send({ message: 'Password incorrect' });
+            }
+          });
+        }
+   })
+})
+
 // doctors/signup
 router.post('/doctors/signup', (req, res) => {
     const {email, password, field} = req.body;
