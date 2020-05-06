@@ -1,5 +1,5 @@
 module.exports = {
     mongoDB:{
-        dbURL: '<insert_the_url_of_your_db_here>'
+        dbURL: 'mongodb+srv://darshilp326:amisha1974@cluster0-9434z.mongodb.net/test?retryWrites=true&w=majority'
     }
 };
