@@ -3,6 +3,9 @@ const Schema = mongoose.Schema;
 
 // create patient Schema & model
 const PatientSchema = new Schema({
+    name:{
+        type: String
+    },
     email: {
         type: String,
         required: [true, 'Name field is required']
@@ -11,6 +14,9 @@ const PatientSchema = new Schema({
         type: String,
         required: [true, 'Password field is required']
     },
+    phone:{
+        type:String
+      },
     accessToken: {
         type: String,
     }

@@ -3,6 +3,12 @@ const Schema = mongoose.Schema;
 
 // create patient Schema & model
 const DoctorSchema = new Schema({
+    name:{
+        type: String
+    },
+    phone:{
+        type:String
+    },
     email: {
         type: String,
         required: [true, 'Name field is required'],
@@ -11,6 +17,15 @@ const DoctorSchema = new Schema({
     password: {
         type: String,
         required: [true, 'Password field is required']
+    },
+    days:{
+        type:String
+    },
+    time:{
+        type:String
+    },
+    venue:{
+       type:String
     },
     field: {
         type: String,
